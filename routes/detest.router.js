@@ -1,10 +1,18 @@
 const express = require('express');
+const DetestService = require('../services/detest.service');
 
 const router = express.Router();
+const service = new DetestService();
 
-router.get('/', (req, res) => {
-    res.send("hi mi name is detest :D");
-//   res.json([]);
+router.get('/', async(req, res) => {
+    try {
+        const tasks = await service.find();
+        res.json(tasks);
+      } catch (error) {
+        next(error);
+      }
+
+    // res.send("hi mi name is detest :D");
 });
 
 
