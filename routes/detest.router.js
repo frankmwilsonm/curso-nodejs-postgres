@@ -11,7 +11,6 @@ router.get('/', async(req, res) => {
       } catch (error) {
         next(error);
       }
-
     // res.send("hi mi name is detest :D");
 });
 

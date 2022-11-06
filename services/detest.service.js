@@ -1,12 +1,13 @@
 const boom = require('@hapi/boom');
 const getConnection = require('../libs/postgres')
 
-const pool = require('../libs/postgres.pool'); // importando nuestro pool
+
+const sequelize = require('../libs/sequelize'); // importando nuestro sequelize
 
 class DetestService {
   constructor() {
-    this.pool = pool; // Añadimoe el pool
-    this.pool.on('err', (err)=> console.error(err)); // capturar error 
+    // this.pool = pool; // Quitamos esto 
+    // this.pool.on('err', (err)=> console.error(err)); // Esto tambien
   }
  
   // async create(data) {
@@ -21,9 +22,10 @@ class DetestService {
 
   async find() {
     const query = 'SELECT * FROM tasks';
-    const rta = await this.pool.query(query);
-    return rta.rows;
+    const [data] = await sequelize.query(query);
+    return data;
   }
+
  
   // async findOne(id) {
   //   return { id };
