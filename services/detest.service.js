@@ -1,8 +1,8 @@
 const boom = require('@hapi/boom');
+const { Detest } = require('../db/models/detest.model');
 const getConnection = require('../libs/postgres')
 
-
-const sequelize = require('../libs/sequelize'); // importando nuestro sequelize
+const { models } = require('../libs/sequelize'); 
 
 class DetestService {
   constructor() {
@@ -10,37 +10,37 @@ class DetestService {
     // this.pool.on('err', (err)=> console.error(err)); // Esto tambien
   }
  
-  // async create(data) {
-  //   return data;
-  // }
+  async create(data) {
+    const newDetest = await models.Detest.create(data);
+    return newDetest;
+  }
  
-  // async find() {
-  //   const client = await getConnection();
-  //   const rta = await client.query('SELECT * FROM tasks');
-  //   return rta.rows;
-  // }
 
   async find() {
-    const query = 'SELECT * FROM tasks';
-    const [data] = await sequelize.query(query);
-    return data;
+    const rta = await models.Detest.findAll();
+    return rta;
   }
 
  
-  // async findOne(id) {
-  //   return { id };
-  // }
+  async findOne(id) {
+    const detest = await models.Detest.findByPk(id);
+    if (!detest) {
+      throw boom.notFound('Detest not found');
+    }
+    return detest;
+  }
  
-  // async update(id, changes) {
-  //   return {
-  //     id,
-  //     changes,
-  //   };
-  // }
+  async update(id, changes) {
+    const detest = await models.Detest.findByPk(id);
+    const rta = await detest.update(changes);
+    return rta;
+  }
  
-  // async delete(id) {
-  //   return { id };
-  // }
+  async delete(id) {
+    const detest = await models.Detest.findByPk(id);
+    await detest.destroy();
+    return { id };
+  }
  
 }
 
